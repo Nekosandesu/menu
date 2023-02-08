@@ -5,6 +5,12 @@ import { find, findIndex } from 'lodash-es';
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Dish } from '../App';
 
+interface DishOption {
+  label?: string;
+  value: number | string;
+  disabled?: boolean;
+}
+
 interface Step3Props {
   allDishes: Dish[];
   selectedDishes: Dish[];
@@ -14,11 +20,7 @@ interface Step3Props {
   selectedRestaurant?: string;
   data: Record<string, any>;
 }
-interface DishOption {
-  label?: string;
-  value: number | string;
-  disabled?: boolean;
-}
+
 export default function Step3({
   allDishes,
   selectedDishes,
@@ -30,6 +32,16 @@ export default function Step3({
 }: Step3Props) {
   const [dishOptions, setDishOptions] = useState<Array<DishOption>>([]);
 
+  // when step2 changed, reset selectedDishes,`
+  useEffect(() => {
+    if (selectedDishes.length) {
+      const one = find(data.dishes, ['id', selectedDishes[0].id]);
+      if (one && one.restaurant !== selectedRestaurant) {
+        setSelectedDishes([]);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const selectIds = selectedDishes.map((i) => i.id);
     setDishOptions(
@@ -40,16 +52,6 @@ export default function Step3({
       }))
     );
   }, [allDishes]);
-
-  // when step2 changed, reset selectedDishes,`
-  useEffect(() => {
-    if (selectedDishes.length) {
-      const one = find(data.dishes, ['id', selectedDishes[0].id]);
-      if (one && one.restaurant !== selectedRestaurant) {
-        setSelectedDishes([]);
-      }
-    }
-  }, []);
 
   const totalNumber = useMemo(() => {
     return selectedDishes.reduce((acc, { count }) => acc + (count || 0), 0);

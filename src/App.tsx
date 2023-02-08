@@ -1,19 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Steps, Button, Tooltip } from 'antd';
-import './App.css';
+import { Steps, Button, Tooltip, message } from 'antd';
 import data from './data/dishes.json';
 import Step1 from './components/Step1';
 import Step2 from './components/Step2';
 import Step3 from './components/Step3';
 import Review from './components/Review';
+import './App.css';
 
-const steps = [{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }, { title: 'Review' }];
-
-export enum MEAL_CATEGORY {
-  breakfast = 'breakfast',
-  lunch = 'lunch',
-  dinner = 'dinner',
-}
+const STEPS = [{ title: 'Step 1' }, { title: 'Step 2' }, { title: 'Step 3' }, { title: 'Review' }];
 
 enum STEP {
   one,
@@ -22,11 +16,18 @@ enum STEP {
   review,
 }
 
+export enum MEAL_CATEGORY {
+  breakfast = 'breakfast',
+  lunch = 'lunch',
+  dinner = 'dinner',
+}
+
 export interface Dish {
   id: number | string;
   name?: string;
   count?: number;
 }
+
 function App() {
   const [current, setCurrent] = useState<STEP>(STEP.one);
   const [mealCategory, setMealCategory] = useState<MEAL_CATEGORY>();
@@ -34,6 +35,7 @@ function App() {
   const [selectedRestaurant, setSelectedRestaurant] = useState<string>();
   const [selectedDishes, setSelectedDishes] = useState<Array<Dish>>([]);
   const [formError, setFormError] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const nextReady = useMemo(() => {
     switch (current) {
@@ -76,7 +78,6 @@ function App() {
       )
       .map(({ id, name }) => ({ id, name }));
     const set = new Set();
-
     return redundantDishes.filter(({ id }) => {
       if (!set.has(id)) {
         set.add(id);
@@ -98,8 +99,13 @@ function App() {
         restaurant: selectedRestaurant,
         dishes: selectedDishes,
       });
+
+      messageApi.open({
+        type: 'success',
+        content: 'Success!',
+      });
     }
-  }, [current]);
+  }, [current, mealCategory, peopleNumber, selectedRestaurant, selectedDishes]);
 
   const onPrevious = useCallback(() => {
     setCurrent((pre) => pre - 1);
@@ -155,8 +161,10 @@ function App() {
 
   return (
     <div className="container">
+      {contextHolder}
+
       <div className="step-container">
-        <Steps current={current} items={steps} />
+        <Steps current={current} items={STEPS} />
       </div>
 
       <div className="form" style={{ display: 'flex', justifyContent: 'center' }}>

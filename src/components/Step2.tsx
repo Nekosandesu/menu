@@ -7,6 +7,7 @@ interface Step2Props {
   restaurants: { label: string; value: string }[];
   setSelectedRestaurant: Dispatch<SetStateAction<string | undefined>>;
 }
+
 export default function Step2({
   selectedRestaurant,
   restaurants,

@@ -8,6 +8,7 @@ interface Step1Props {
   setMealCategory: Dispatch<SetStateAction<MEAL_CATEGORY | undefined>>;
   setPeopleNumber: Dispatch<SetStateAction<number>>;
 }
+
 export default function Step1({
   mealCategory,
   peopleNumber,

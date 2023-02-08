@@ -8,6 +8,7 @@ interface ReviewProps {
   restaurant: string | undefined;
   dishes: Array<Dish>;
 }
+
 export default function Review({ meal, peopleNumber, restaurant, dishes }: ReviewProps) {
   const results = useMemo(() => {
     return [
