@@ -116,29 +116,32 @@ export default function Step3({
       ];
     });
 
-    // enable the old dish in the options
-    const oldIndex = findIndex(dishOptions, ['value', oldId]);
-    if (oldIndex > -1) {
+    // number change will not execute
+    if (id) {
+      // enable the old dish in the options
+      const oldIndex = findIndex(dishOptions, ['value', oldId]);
+      if (oldIndex > -1) {
+        setDishOptions((pre) => [
+          ...pre.slice(0, oldIndex),
+          {
+            ...dishOptions[oldIndex],
+            disabled: false,
+          },
+          ...pre.slice(oldIndex + 1),
+        ]);
+      }
+
+      // disable the new dish in the options
+      const newIndex = findIndex(dishOptions, ['value', id]);
       setDishOptions((pre) => [
-        ...pre.slice(0, oldIndex),
+        ...pre.slice(0, newIndex),
         {
-          ...dishOptions[oldIndex],
-          disabled: false,
+          ...dishOptions[newIndex],
+          disabled: true,
         },
-        ...pre.slice(oldIndex + 1),
+        ...pre.slice(newIndex + 1),
       ]);
     }
-
-    // disable the new dish in the options
-    const newIndex = findIndex(dishOptions, ['value', id]);
-    setDishOptions((pre) => [
-      ...pre.slice(0, newIndex),
-      {
-        ...dishOptions[newIndex],
-        disabled: true,
-      },
-      ...pre.slice(newIndex + 1),
-    ]);
   };
 
   return (

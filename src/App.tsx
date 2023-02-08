@@ -56,7 +56,7 @@ function App() {
         return true;
     }
     return true;
-  }, [current, mealCategory, peopleNumber, selectedRestaurant, selectedDishes]);
+  }, [current, mealCategory, peopleNumber, selectedRestaurant, selectedDishes, formError]);
 
   const restaurants = useMemo(() => {
     if (!mealCategory) return [];
