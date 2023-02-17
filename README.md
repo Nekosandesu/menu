@@ -1,3 +1,3 @@
 # menu
 
-Live demo: https://stackblitz.com/edit/vitejs-vite-kvup6m?file=package.json
+Live demo: https://nekosandesu.github.io/works/menu/index.html
